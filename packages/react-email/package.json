@@ -46,7 +46,7 @@
   "dependencies": {
     "@babel/parser": "catalog:",
     "@babel/traverse": "catalog:",
-    "@react-email/render": "workspace:>=2.0.8",
+    "@react-email/render": "workspace:>=2.0.9",
     "chokidar": "^4.0.3",
     "commander": "catalog:",
     "conf": "^15.0.2",
