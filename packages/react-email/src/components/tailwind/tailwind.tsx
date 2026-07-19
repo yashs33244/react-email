@@ -6,6 +6,7 @@ import { sanitizeStyleSheet } from './sanitize-stylesheet.js';
 import { downlevelForEmailClients } from './utils/css/downlevel-for-email-clients.js';
 import { extractRulesPerClass } from './utils/css/extract-rules-per-class.js';
 import { getCustomProperties } from './utils/css/get-custom-properties.js';
+import { nestConditionalAtrules } from './utils/css/nest-conditional-atrules.js';
 import { sanitizeNonInlinableRules } from './utils/css/sanitize-non-inlinable-rules.js';
 import { mapReactTree } from './utils/react/map-react-tree.js';
 import { cloneElementWithInlinedStyles } from './utils/tailwindcss/clone-element-with-inlined-styles.js';
@@ -115,6 +116,9 @@ export function Tailwind({ children, config, theme, utility }: TailwindProps) {
 
   const styleSheet = tailwindSetup.getStyleSheet();
   sanitizeStyleSheet(styleSheet);
+  // tailwindcss >= 4.3.3 emits variants as `@media { .cls {...} }` instead of
+  // the nested `.cls { @media {...} }` the extraction below expects (#3662).
+  nestConditionalAtrules(styleSheet);
 
   const { inlinable: inlinableRules, nonInlinable: nonInlinableRules } =
     extractRulesPerClass(styleSheet, classesUsed);
